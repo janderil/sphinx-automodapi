@@ -132,7 +132,10 @@ class Automodsumm(Autosummary):
         nodelist = []
 
         try:
-            localnames, fqns, objs = find_mod_objs(modname)
+            ols = self.options.get('allowed-package-names', [])
+            ols = True if len(ols) == 0 else ols  # if none are given, assume only local
+
+            localnames, fqns, objs = find_mod_objs(modname, onlylocals=ols)
         except ImportError:
             self.warnings = []
             self.warn("Couldn't import module " + modname)
